@@ -1,0 +1,75 @@
+<header class="cabecalho">
+  <div class="cabecalho-conteudo">
+    <button class="botao-menu-mobile" (click)="toggleMenu.emit()" title="Menu">
+      <i class="bi bi-list"></i>
+    </button>
+
+    <div class="logo">
+      <i class="bi bi-bank2"></i>
+      <h1>MeuBanco</h1>
+    </div>
+
+    @if (conta$ | async; as conta) {
+    <div class="info-usuario">
+      <div class="container-notificacoes">
+        <button class="botao-icone" (click)="alternarNotificacoes()" title="Notificações">
+          <i class="bi bi-bell"></i>
+          @if (notificacoesNaoLidas$ | async; as naoLidas) {
+            @if (naoLidas > 0) {
+              <span class="badge-notificacao">{{ naoLidas }}</span>
+            }
+          }
+        </button>
+
+        @if (mostrarNotificacoes) {
+        <div class="dropdown-notificacoes">
+          <div class="header-notificacoes">
+            <h3>Notificações</h3>
+            @if (notificacoesNaoLidas$ | async; as naoLidas) {
+              <span class="contador">{{ naoLidas }} não lidas</span>
+            }
+          </div>
+
+          <div class="lista-notificacoes">
+            @if (notificacoes$ | async; as notificacoes) {
+              @if (notificacoes.length === 0) {
+                <div class="notificacao-vazia">
+                  <i class="bi bi-bell-slash"></i>
+                  <p>Nenhuma notificação</p>
+                </div>
+              } @else {
+                @for (notificacao of notificacoes; track notificacao.id) {
+            <div class="item-notificacao" [class.nao-lida]="!notificacao.lida"
+              [class]="obterCorNotificacao(notificacao.tipo)" (click)="marcarComoLida(notificacao)">
+              <div class="icone-notificacao">
+                <i class="bi" [class]="obterIconeNotificacao(notificacao.tipo)"></i>
+              </div>
+              <div class="conteudo-notificacao">
+                <h4>{{ notificacao.titulo }}</h4>
+                <p>{{ notificacao.mensagem }}</p>
+                <span class="data-notificacao">{{ notificacao.data | date: 'dd/MM/yyyy HH:mm' }}</span>
+              </div>
+              @if (!notificacao.lida) {
+              <div class="indicador-nao-lida"></div>
+              }
+            </div>
+                }
+              }
+            }
+          </div>
+        </div>
+        }
+      </div>
+
+      <button class="botao-icone" (click)="alternarFullscreen()" title="Fullscreen">
+        <i class="bi" [class.bi-fullscreen]="!emFullscreen" [class.bi-fullscreen-exit]="emFullscreen"></i>
+      </button>
+
+      <div class="usuario">
+        <i class="bi bi-person-circle"></i>
+        <span class="nome-usuario">Olá, {{ conta.nome }}</span>
+      </div>
+    </div>
+    }
+  </div>
+</header>

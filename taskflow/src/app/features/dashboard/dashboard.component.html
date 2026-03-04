@@ -1,0 +1,147 @@
+<div class="painel">
+  <div class="cabecalho-painel">
+    <h2>Dashboard</h2>
+  </div>
+
+  @if (carregando$ | async) {
+  <div class="text-center py-5">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Carregando...</span>
+    </div>
+  </div>
+  } @else {
+  @if (conta$ | async; as conta) {
+
+  <div class="cartao-saldo">
+    <div class="cabecalho-saldo">
+      <span class="rotulo-saldo">Saldo Disponível</span>
+      <i class="bi bi-wallet2"></i>
+    </div>
+    <div class="valor-saldo">
+      {{ conta.saldo | currency: 'BRL' }}
+    </div>
+  </div>
+
+  <div class="grade-estatisticas">
+    <div class="cartao-estatistica estatistica-receita">
+      <div class="icone-estatistica">
+        <i class="bi bi-arrow-down-circle"></i>
+      </div>
+      <div class="conteudo-estatistica">
+        <span class="rotulo-estatistica">Receitas</span>
+        <span class="valor-estatistica">{{ totalReceitas | currency: 'BRL' }}</span>
+      </div>
+    </div>
+
+    <div class="cartao-estatistica estatistica-despesa">
+      <div class="icone-estatistica">
+        <i class="bi bi-arrow-up-circle"></i>
+      </div>
+      <div class="conteudo-estatistica">
+        <span class="rotulo-estatistica">Despesas</span>
+        <span class="valor-estatistica">{{ totalDespesas | currency: 'BRL' }}</span>
+      </div>
+    </div>
+
+    <div class="cartao-estatistica estatistica-transacoes">
+      <div class="icone-estatistica">
+        <i class="bi bi-card-list"></i>
+      </div>
+      <div class="conteudo-estatistica">
+        <span class="rotulo-estatistica">Transações</span>
+        <span class="valor-estatistica">{{ totalTransacoes }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="transacoes-recentes">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h3 class="mb-0">Últimas Transações</h3>
+      <button class="btn btn-outline-secondary btn-sm" (click)="atualizarDados()">
+        <i class="bi bi-arrow-clockwise"></i> Atualizar
+      </button>
+    </div>
+    @if (transacoes$ | async; as transacoes) {
+    @if (transacoes.length === 0) {
+    <div class="alert alert-info">
+      Nenhuma transação encontrada.
+    </div>
+    } @else {
+    <div class="lista-transacoes">
+      @for (transacao of transacoes.slice(0, 5); track transacao.id) {
+      <div class="item-transacao" (click)="abrirDetalhesTransacao(transacao)" style="cursor: pointer;">
+        <div class="icone-transacao" [class.receita]="transacao.tipo === 'receita'"
+          [class.despesa]="transacao.tipo === 'despesa'">
+          <i class="bi" [class.bi-arrow-down-circle]="transacao.tipo === 'receita'"
+            [class.bi-arrow-up-circle]="transacao.tipo === 'despesa'"></i>
+        </div>
+        <div class="info-transacao">
+          <span class="descricao-transacao">{{ transacao.descricao }}</span>
+          <span class="data-transacao">{{ transacao.data | date: 'dd/MM/yyyy HH:mm' }}</span>
+        </div>
+        <div class="valor-transacao" [class.receita]="transacao.tipo === 'receita'"
+          [class.despesa]="transacao.tipo === 'despesa'">
+          {{ transacao.valor | currency: 'BRL' }}
+        </div>
+      </div>
+      }
+    </div>
+    }
+    }
+  </div>
+  }
+  }
+
+  @if (mostrarModal && transacaoSelecionada) {
+  <div class="modal fade show" style="display: block;" tabindex="-1" (click)="fecharModal()">
+    <div class="modal-dialog modal-dialog-centered" (click)="$event.stopPropagation()">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">
+            <i class="bi" [class.bi-arrow-down-circle]="transacaoSelecionada.tipo === 'receita'"
+              [class.bi-arrow-up-circle]="transacaoSelecionada.tipo === 'despesa'"></i>
+            Detalhes da Transação
+          </h5>
+          <button type="button" class="btn-close" (click)="fecharModal()"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label class="form-label text-muted">Descrição</label>
+            <p class="fw-bold">{{ transacaoSelecionada.descricao }}</p>
+          </div>
+          <div class="mb-3">
+            <label class="form-label text-muted">Tipo</label>
+            <p>
+              <span class="badge" [class.bg-success]="transacaoSelecionada.tipo === 'receita'"
+                [class.bg-danger]="transacaoSelecionada.tipo === 'despesa'">
+                {{ transacaoSelecionada.tipo === 'receita' ? 'Receita' : 'Despesa' }}
+              </span>
+            </p>
+          </div>
+          <div class="mb-3">
+            <label class="form-label text-muted">Valor</label>
+            <p class="fs-4 fw-bold" [class.text-success]="transacaoSelecionada.tipo === 'receita'"
+              [class.text-danger]="transacaoSelecionada.tipo === 'despesa'">
+              {{ transacaoSelecionada.valor | currency: 'BRL' }}
+            </p>
+          </div>
+          <div class="mb-3">
+            <label class="form-label text-muted">Data e Hora</label>
+            <p>{{ transacaoSelecionada.data | date: 'dd/MM/yyyy HH:mm:ss' }}</p>
+          </div>
+          @if (transacaoSelecionada.id) {
+          <div class="mb-3">
+            <label class="form-label text-muted">ID da Transação</label>
+            <p class="font-monospace">#{{ transacaoSelecionada.id }}</p>
+          </div>
+          }
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" (click)="fecharModal()">Fechar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-backdrop fade show"></div>
+  }
+</div>

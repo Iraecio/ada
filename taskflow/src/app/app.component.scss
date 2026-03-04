@@ -1,0 +1,40 @@
+.app-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.main-container {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+  position: relative;
+}
+
+.menu-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 998;
+  display: none;
+
+  @media (max-width: 768px) {
+    display: block;
+  }
+}
+
+.content {
+  flex: 1;
+  overflow-y: auto;
+  background-color: #f8f9fa;
+  padding: 2rem;
+  transition: margin-left 0.3s ease;
+
+  @media (max-width: 768px) {
+    padding: 1rem;
+    margin-left: 0 !important;
+  }
+}

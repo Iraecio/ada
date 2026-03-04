@@ -1,0 +1,154 @@
+.transacoes {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.cabecalho-transacoes {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+
+  h2 {
+    font-size: 2rem;
+    font-weight: 600;
+    color: #212529;
+    margin: 0;
+  }
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+}
+
+.filtros {
+  display: flex;
+  gap: 0.75rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+
+.container-transacoes {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 0.75rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.table {
+  margin-bottom: 0;
+
+  thead {
+    background-color: #f8f9fa;
+
+    th {
+      font-weight: 600;
+      color: #495057;
+      border-bottom: 2px solid #dee2e6;
+      padding: 1rem;
+    }
+  }
+
+  tbody {
+    td {
+      padding: 1rem;
+      vertical-align: middle;
+    }
+
+    tr {
+      transition: background-color 0.2s;
+
+      &:hover {
+        background-color: #f8f9fa;
+      }
+    }
+  }
+}
+
+.data-transacao {
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.descricao-transacao {
+  font-weight: 500;
+  color: #212529;
+}
+
+.valor-transacao {
+  font-size: 1.125rem;
+  font-weight: 600;
+
+  &.receita {
+    color: #28a745;
+  }
+
+  &.despesa {
+    color: #dc3545;
+  }
+}
+
+.resumo-transacoes {
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #dee2e6;
+  text-align: right;
+  color: #495057;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.875rem;
+}
+
+@media (max-width: 768px) {
+  .table-responsive {
+    font-size: 0.875rem;
+  }
+
+  .table {
+    thead th,
+    tbody td {
+      padding: 0.75rem 0.5rem;
+    }
+  }
+
+  .valor-transacao {
+    font-size: 1rem;
+  }
+}
+
+.container-formulario-deposito {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 0.75rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  margin-bottom: 2rem;
+
+  h4 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    color: #212529;
+  }
+
+  .acoes-formulario {
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+    margin-top: 1.5rem;
+
+    @media (max-width: 576px) {
+      flex-direction: column;
+
+      button {
+        width: 100%;
+      }
+    }
+  }
+}

@@ -1,0 +1,145 @@
+<div class="transferencia">
+  <div class="cabecalho-transferencia">
+    <h2>Transferência</h2>
+  </div>
+
+  <div class="row">
+    <div class="col-lg-8">
+      <div class="container-formulario-transferencia">
+        @if (conta$ | async; as conta) {
+          <div class="alert alert-info">
+            <i class="bi bi-wallet2"></i>
+            <strong>Saldo disponível:</strong> {{ conta.saldo | currency: 'BRL' }}
+          </div>
+        }
+
+        @if (mensagemSucesso) {
+          <div class="alert alert-success alert-dismissible fade show">
+            <i class="bi bi-check-circle"></i> {{ mensagemSucesso }}
+          </div>
+        }
+
+        @if (mensagemErro) {
+          <div class="alert alert-danger alert-dismissible fade show">
+            <i class="bi bi-exclamation-triangle"></i> {{ mensagemErro }}
+          </div>
+        }
+
+        <form [formGroup]="formularioTransferencia" (ngSubmit)="aoEnviar()">
+          <!-- Target Account -->
+          <div class="mb-3">
+            <label for="contaDestino" class="form-label">Conta Destino *</label>
+            <input 
+              type="text" 
+              class="form-control"
+              [class.is-invalid]="enviado && f['contaDestino'].errors"
+              id="contaDestino"
+              formControlName="contaDestino"
+              placeholder="Digite o número da conta ou CPF">
+            @if (enviado && f['contaDestino'].errors) {
+              <div class="invalid-feedback">
+                @if (f['contaDestino'].errors['required']) {
+                  Conta destino é obrigatória
+                }
+                @if (f['contaDestino'].errors['minlength']) {
+                  Conta destino deve ter no mínimo 3 caracteres
+                }
+              </div>
+            }
+          </div>
+
+          <!-- Amount -->
+          <div class="mb-3">
+            <label for="valor" class="form-label">Valor *</label>
+            <input 
+              type="text" 
+              class="form-control"
+              [class.is-invalid]="(enviado && f['valor'].errors) || temSaldoInsuficiente()"
+              id="valor"
+              formControlName="valor"
+              placeholder="R$ 0,00"
+              currencyMask
+              [options]="opcoesMoeda">
+            
+            <!-- Alerta de saldo insuficiente em tempo real -->
+            @if (temSaldoInsuficiente() && !enviado) {
+              <div class="alert alert-warning mt-2 mb-0 py-2">
+                <i class="bi bi-exclamation-triangle"></i>
+                <small>O valor informado excede seu saldo disponível ({{ saldoAtual | currency: 'BRL' }})</small>
+              </div>
+            }
+            
+            @if (enviado && (f['valor'].errors || temSaldoInsuficiente())) {
+              <div class="invalid-feedback d-block">
+                @if (f['valor'].errors?.['required']) {
+                  Valor é obrigatório
+                } @else if (f['valor'].errors?.['min']) {
+                  Valor deve ser maior que zero
+                } @else if (temSaldoInsuficiente()) {
+                  Saldo insuficiente para realizar a transferência
+                }
+              </div>
+            }
+          </div>
+
+          <!-- Description -->
+          <div class="mb-3">
+            <label for="descricao" class="form-label">Descrição *</label>
+            <textarea 
+              class="form-control"
+              [class.is-invalid]="enviado && f['descricao'].errors"
+              id="descricao"
+              formControlName="descricao"
+              rows="3"
+              placeholder="Descrição da transferência"></textarea>
+            @if (enviado && f['descricao'].errors) {
+              <div class="invalid-feedback">
+                @if (f['descricao'].errors['required']) {
+                  Descrição é obrigatória
+                }
+                @if (f['descricao'].errors['minlength']) {
+                  Descrição deve ter no mínimo 3 caracteres
+                }
+              </div>
+            }
+          </div>
+
+          <!-- Buttons -->
+          <div class="acoes-formulario">
+            <button 
+              type="button" 
+              class="btn btn-outline-secondary"
+              (click)="redefinir()"
+              [disabled]="processando">
+              Limpar
+            </button>
+            <button 
+              type="submit" 
+              class="btn btn-primary"
+              [disabled]="!podeTransferir()">
+              @if (processando) {
+                <span class="spinner-border spinner-border-sm me-2"></span>
+                Processando...
+              } @else {
+                <i class="bi bi-arrow-left-right me-2"></i>
+                Transferir
+              }
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div class="col-lg-4">
+      <div class="painel-info">
+        <h4>Informações Importantes</h4>
+        <ul>
+          <li>Todas as transferências são processadas imediatamente</li>
+          <li>Verifique os dados antes de confirmar</li>
+          <li>O valor será debitado do seu saldo atual</li>
+          <li>Guarde o comprovante da transação</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>

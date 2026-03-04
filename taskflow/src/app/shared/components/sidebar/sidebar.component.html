@@ -1,0 +1,23 @@
+<aside class="menu-lateral" [class.aberto]="menuAberto" [class.expandido]="menuExpandido">
+  <div class="menu-header">
+    <div class="logo-menu">
+      <i class="bi bi-currency-dollar"></i>
+    </div>
+    <button class="botao-toggle-desktop" (click)="alternarExpansao()" title="Expandir/Recolher menu">
+      <i class="bi" [class.bi-chevron-left]="menuExpandido" [class.bi-chevron-right]="!menuExpandido"></i>
+    </button>
+  </div>
+  
+  <nav class="menu">
+    @for (item of itensMenu; track item.id) {
+      <button
+        class="item-menu"
+        [class.ativo]="visaoAtual === item.id"
+        (click)="aoClicarMenu(item.id)"
+        [title]="item.rotulo">
+        <i class="bi {{ item.icone }}"></i>
+        <span class="rotulo-menu">{{ item.rotulo }}</span>
+      </button>
+    }
+  </nav>
+</aside>

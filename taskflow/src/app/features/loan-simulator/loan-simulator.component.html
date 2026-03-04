@@ -1,0 +1,145 @@
+<div class="simulador-emprestimo">
+  <div class="cabecalho-simulador">
+    <h2>Simulador de Crédito</h2>
+  </div>
+
+  <div class="row">
+    <div class="col-lg-6">
+      <div class="container-formulario-simulador">
+        <h4>Dados da Simulação</h4>
+
+        @if (mensagemSucesso) {
+        <div class="alert alert-success">
+          <i class="bi bi-check-circle"></i> {{ mensagemSucesso }}
+        </div>
+        }
+
+        @if (mensagensErro.length > 0) {
+        <div class="alert alert-danger">
+          <ul class="mb-0">
+            @for (erro of mensagensErro; track erro) {
+            <li>{{ erro }}</li>
+            }
+          </ul>
+        </div>
+        }
+
+        <form [formGroup]="formularioEmprestimo" (ngSubmit)="aoCalcular()">
+          <div class="mb-3">
+            <label for="valor" class="form-label">Valor Solicitado *</label>
+            <input type="text" class="form-control" [class.is-invalid]="enviado && f['valor'].errors" id="valor"
+              formControlName="valor" placeholder="R$ 0,00" currencyMask [options]="opcoesMoeda">
+            @if (enviado && f['valor'].errors) {
+            <div class="invalid-feedback d-block">
+              @if (f['valor'].errors['required']) {
+              Valor é obrigatório
+              } @else if (f['valor'].errors['min']) {
+              Valor mínimo: R$ 100,00
+              } @else if (f['valor'].errors['max']) {
+              Valor máximo: R$ 100.000,00
+              }
+            </div>
+            }
+            <small class="form-text text-muted">Mínimo: R$ 100,00 | Máximo: R$ 100.000,00</small>
+          </div>
+
+          <!-- Installments -->
+          <div class="mb-3">
+            <label for="parcelas" class="form-label">Número de Parcelas *</label>
+            <input type="number" class="form-control" [class.is-invalid]="enviado && f['parcelas'].errors" id="parcelas"
+              formControlName="parcelas" placeholder="12" min="1" max="60">
+            @if (enviado && f['parcelas'].errors) {
+            <div class="invalid-feedback d-block">
+              @if (f['parcelas'].errors['required']) {
+              Número de parcelas é obrigatório
+              } @else if (f['parcelas'].errors['min']) {
+              Mínimo: 1 parcela
+              } @else if (f['parcelas'].errors['max']) {
+              Máximo: 60 parcelas
+              }
+            </div>
+            }
+            <small class="form-text text-muted">Mínimo: 1 parcela | Máximo: 60 parcelas</small>
+          </div>
+
+          <div class="mb-3">
+            <label for="taxaJuros" class="form-label">Taxa de Juros (% ao ano) *</label>
+            <div class="input-group">
+              <input type="number" class="form-control" [class.is-invalid]="enviado && f['taxaJuros'].errors"
+                id="taxaJuros" formControlName="taxaJuros" placeholder="12.0" step="0.1" min="0" max="100">
+              <span class="input-group-text">%</span>
+            </div>
+            @if (enviado && f['taxaJuros'].errors) {
+            <div class="invalid-feedback d-block">
+              @if (f['taxaJuros'].errors['required']) {
+              Taxa de juros é obrigatória
+              } @else if (f['taxaJuros'].errors['min']) {
+              Taxa mínima: 0%
+              } @else if (f['taxaJuros'].errors['max']) {
+              Taxa máxima: 100%
+              }
+            </div>
+            }
+            <small class="form-text text-muted">Taxa de juros anual</small>
+          </div>
+
+          <div class="acoes-formulario">
+            <button type="button" class="btn btn-outline-secondary" (click)="redefinir()">
+              Limpar
+            </button>
+            <button type="submit" class="btn btn-primary">
+              <i class="bi bi-calculator me-2"></i>
+              Calcular
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div class="col-lg-6">
+      @if (mostrarResultados && calculo) {
+      <div class="container-resultados">
+        <h4>Resultado da Simulação</h4>
+
+        <div class="cartao-resultado">
+          <div class="item-resultado">
+            <span class="rotulo-resultado">Valor da Parcela</span>
+            <span class="valor-resultado primario">{{ calculo.valorParcela | currency: 'BRL' }}</span>
+          </div>
+
+          <div class="item-resultado">
+            <span class="rotulo-resultado">Valor Total</span>
+            <span class="valor-resultado">{{ calculo.valorTotal | currency: 'BRL' }}</span>
+          </div>
+
+          <div class="item-resultado">
+            <span class="rotulo-resultado">Total de Juros</span>
+            <span class="valor-resultado">{{ calculo.jurosTotal | currency: 'BRL' }}</span>
+          </div>
+
+          <div class="item-resultado">
+            <span class="rotulo-resultado">Número de Parcelas</span>
+            <span class="valor-resultado">{{ formularioEmprestimo.value.parcelas }}x</span>
+          </div>
+        </div>
+
+        <div class="secao-contratar">
+          <button class="btn btn-success btn-lg w-100" (click)="aoContratar()">
+            <i class="bi bi-check-circle me-2"></i>
+            Contratar Empréstimo
+          </button>
+          <p class="text-muted text-center mt-2 mb-0">
+            <small>Ao contratar, você concorda com os termos e condições</small>
+          </p>
+        </div>
+      </div>
+      } @else {
+      <div class="estado-vazio">
+        <i class="bi bi-calculator"></i>
+        <h5>Nenhuma simulação ainda</h5>
+        <p>Preencha os campos ao lado e clique em "Calcular" para ver o resultado</p>
+      </div>
+      }
+    </div>
+  </div>
+</div>

@@ -1,0 +1,202 @@
+.painel {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.cabecalho-painel {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+
+  h2 {
+    font-size: 2rem;
+    font-weight: 600;
+    color: #212529;
+    margin: 0;
+  }
+}
+
+.cartao-saldo {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 2rem;
+  border-radius: 1rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin-bottom: 2rem;
+
+  .cabecalho-saldo {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+
+    .rotulo-saldo {
+      font-size: 1rem;
+      opacity: 0.9;
+    }
+
+    i {
+      font-size: 2rem;
+      opacity: 0.8;
+    }
+  }
+
+  .valor-saldo {
+    font-size: 2.5rem;
+    font-weight: 700;
+
+    @media (max-width: 576px) {
+      font-size: 2rem;
+    }
+  }
+}
+
+.grade-estatisticas {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.cartao-estatistica {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 0.75rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+
+  .icone-estatistica {
+    width: 50px;
+    height: 50px;
+    border-radius: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+  }
+
+  .conteudo-estatistica {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .rotulo-estatistica {
+    font-size: 0.875rem;
+    color: #6c757d;
+  }
+
+  .valor-estatistica {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #212529;
+  }
+
+  &.estatistica-receita .icone-estatistica {
+    background-color: #d4edda;
+    color: #28a745;
+  }
+
+  &.estatistica-despesa .icone-estatistica {
+    background-color: #f8d7da;
+    color: #dc3545;
+  }
+
+  &.estatistica-transacoes .icone-estatistica {
+    background-color: #d1ecf1;
+    color: #17a2b8;
+  }
+}
+
+.transacoes-recentes {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 0.75rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+
+  h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    color: #212529;
+  }
+}
+
+.lista-transacoes {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.item-transacao {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  transition: all 0.2s ease;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #f8f9fa;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+
+  .icone-transacao {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+
+    &.receita {
+      background-color: #d4edda;
+      color: #28a745;
+    }
+
+    &.despesa {
+      background-color: #f8d7da;
+      color: #dc3545;
+    }
+  }
+
+  .info-transacao {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+
+    .descricao-transacao {
+      font-weight: 500;
+      color: #212529;
+    }
+
+    .data-transacao {
+      font-size: 0.875rem;
+      color: #6c757d;
+    }
+  }
+
+  .valor-transacao {
+    font-size: 1.125rem;
+    font-weight: 600;
+
+    &.receita {
+      color: #28a745;
+    }
+
+    &.despesa {
+      color: #dc3545;
+    }
+  }
+}

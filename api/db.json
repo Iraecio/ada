@@ -1,46 +1,205 @@
 {
   "account": {
     "id": 1,
-    "name": "Cliente Demo",
-    "balance": 5230.75
+    "nome": "Cliente Demo",
+    "saldo": 51550.41
   },
   "transactions": [
     {
       "id": "1",
-      "date": "2026-02-01T10:00:00",
-      "description": "Salário",
-      "amount": 4500,
-      "type": "income"
+      "data": "2026-02-01T10:00:00",
+      "descricao": "Salário",
+      "valor": 4500,
+      "tipo": "receita"
     },
     {
       "id": "2",
-      "date": "2026-02-02T14:32:00",
-      "description": "Supermercado",
-      "amount": -230.5,
-      "type": "expense"
+      "data": "2026-02-02T14:32:00",
+      "descricao": "Supermercado",
+      "valor": -230.5,
+      "tipo": "despesa"
     },
     {
       "id": "3",
-      "date": "2026-02-03T20:10:00",
-      "description": "Netflix",
-      "amount": -39.9,
-      "type": "expense"
+      "data": "2026-02-03T20:10:00",
+      "descricao": "Netflix",
+      "valor": -39.9,
+      "tipo": "despesa"
     },
     {
       "id": "4",
-      "date": "2026-02-05T09:15:00",
-      "description": "Freelance",
-      "amount": 1000,
-      "type": "income"
+      "data": "2026-02-05T09:15:00",
+      "descricao": "Freelance",
+      "valor": 1000,
+      "tipo": "receita"
     },
     {
       "id": "cb0c",
-      "date": "2026-02-26",
-      "description": "testet",
-      "amount": 2,
-      "type": "income"
+      "data": "2026-02-26",
+      "descricao": "testet",
+      "valor": 2,
+      "tipo": "receita"
+    },
+    {
+      "id": "ff4d",
+      "data": "2026-03-03T23:26:06.303Z",
+      "descricao": "Empréstimo contratado - 12x de R$ 1095.77",
+      "valor": 12333,
+      "tipo": "receita"
+    },
+    {
+      "id": "94bc",
+      "data": "2026-03-03T23:30:57.358Z",
+      "descricao": "Transferência para 12345",
+      "valor": -5000,
+      "tipo": "despesa"
+    },
+    {
+      "id": "44ed",
+      "data": "2026-03-03T23:38:52.124Z",
+      "descricao": "Empréstimo contratado - 45x de R$ 9.82",
+      "valor": 354.44,
+      "tipo": "receita"
+    },
+    {
+      "id": "71e1",
+      "data": "2026-03-03T23:39:26.990Z",
+      "descricao": "Transferência para Agua",
+      "valor": -800,
+      "tipo": "despesa"
+    },
+    {
+      "id": "1af0",
+      "data": "2026-03-04T00:06:07.319Z",
+      "descricao": "Salario",
+      "valor": 15000,
+      "tipo": "receita"
+    },
+    {
+      "id": "73c9",
+      "data": "2026-03-04T00:12:23.324Z",
+      "descricao": "Salario",
+      "valor": 22210,
+      "tipo": "receita"
+    },
+    {
+      "id": "0645",
+      "data": "2026-03-04T00:13:03.497Z",
+      "descricao": "Empréstimo contratado - 12x de R$ 197.44",
+      "valor": 2222.22,
+      "tipo": "receita"
     }
   ],
-  "transfers": [],
-  "loans": []
+  "transfers": [
+    {
+      "id": "ac61",
+      "data": "2026-03-03T23:30:57.358Z",
+      "contaDestino": "12345",
+      "valor": 5000,
+      "descricao": "agua"
+    },
+    {
+      "id": "7e27",
+      "data": "2026-03-03T23:39:26.990Z",
+      "contaDestino": "Agua",
+      "valor": 800,
+      "descricao": "Pagamento da agua"
+    }
+  ],
+  "loans": [
+    {
+      "id": "b982",
+      "valor": 1233,
+      "parcelas": 12,
+      "taxaJuros": 11,
+      "valorParcela": 108.97,
+      "valorTotal": 1307.7,
+      "data": "2026-03-03T23:23:47.267Z"
+    },
+    {
+      "id": "8f61",
+      "valor": 12333,
+      "parcelas": 12,
+      "taxaJuros": 12,
+      "valorParcela": 1095.77,
+      "valorTotal": 13149.27,
+      "data": "2026-03-03T23:26:06.303Z"
+    },
+    {
+      "id": "f0f7",
+      "valor": 354.44,
+      "parcelas": 45,
+      "taxaJuros": 12,
+      "valorParcela": 9.82,
+      "valorTotal": 441.89,
+      "data": "2026-03-03T23:38:52.124Z"
+    },
+    {
+      "id": "fefa",
+      "valor": 2222.22,
+      "parcelas": 12,
+      "taxaJuros": 12,
+      "valorParcela": 197.44,
+      "valorTotal": 2369.3,
+      "data": "2026-03-04T00:13:03.497Z"
+    }
+  ],
+  "notificacoes": [
+    {
+      "id": "1",
+      "titulo": "Novo depósito",
+      "mensagem": "Você recebeu um depósito de R$ 4.500,00",
+      "tipo": "sucesso",
+      "data": "2026-03-01T08:30:00",
+      "lida": true
+    },
+    {
+      "id": "2",
+      "titulo": "Fatura do cartão",
+      "mensagem": "Sua fatura vence em 5 dias",
+      "tipo": "alerta",
+      "data": "2026-02-28T14:20:00",
+      "lida": true
+    },
+    {
+      "id": "3",
+      "titulo": "Transferência realizada",
+      "mensagem": "Transferência de R$ 500,00 foi concluída",
+      "tipo": "info",
+      "data": "2026-02-27T16:45:00",
+      "lida": true
+    },
+    {
+      "id": "4",
+      "titulo": "Promoção especial",
+      "mensagem": "Empréstimo com taxa reduzida até 15/03",
+      "tipo": "info",
+      "data": "2026-02-26T10:00:00",
+      "lida": true
+    },
+    {
+      "id": "e3c7",
+      "titulo": "Depósito Realizado",
+      "mensagem": "Depósito de R$ 15.000,00 realizado com sucesso.",
+      "tipo": "sucesso",
+      "data": "2026-03-04T00:06:07.319Z",
+      "lida": true
+    },
+    {
+      "id": "5b58",
+      "titulo": "Depósito Realizado",
+      "mensagem": "Depósito de R$ 22.210,00 realizado com sucesso.",
+      "tipo": "sucesso",
+      "data": "2026-03-04T00:12:23.324Z",
+      "lida": false
+    },
+    {
+      "id": "0c27",
+      "titulo": "Empréstimo Aprovado",
+      "mensagem": "Empréstimo de R$ 2.222,22 aprovado! 12x de R$ 197,44.",
+      "tipo": "sucesso",
+      "data": "2026-03-04T00:13:03.511Z",
+      "lida": false
+    }
+  ]
 }

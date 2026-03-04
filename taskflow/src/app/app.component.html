@@ -1,6 +1,33 @@
-<app-header></app-header>
-
-<div class="page">
-  <app-sidebar></app-sidebar>
-  <app-main-panel></app-main-panel>
+<div class="app-container">
+  <app-cabecalho (toggleMenu)="alternarMenu()"></app-cabecalho>
+  
+  <div class="main-container"> 
+    @if (menuAberto) {
+      <div class="menu-overlay" (click)="fecharMenu()"></div>
+    }
+    
+    <app-menu-lateral 
+      [visaoAtual]="visaoAtual"
+      [menuAberto]="menuAberto"
+      (navegar)="aoNavegar($event)"
+      (toggleMenu)="alternarMenu()">
+    </app-menu-lateral>
+    
+    <main class="content">
+      @switch (visaoAtual) {
+        @case ('painel') {
+          <app-painel></app-painel>
+        }
+        @case ('transacoes') {
+          <app-transacoes></app-transacoes>
+        }
+        @case ('transferencia') {
+          <app-transferencia></app-transferencia>
+        }
+        @case ('simulador-emprestimo') {
+          <app-simulador-emprestimo></app-simulador-emprestimo>
+        }
+      }
+    </main>
+  </div>
 </div>

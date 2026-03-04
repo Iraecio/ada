@@ -1,0 +1,179 @@
+<div class="transacoes">
+  <div class="cabecalho-transacoes">
+    <h2>Extrato de Transações</h2>
+    <button class="btn btn-success" (click)="alternarFormularioDeposito()">
+      <i class="bi bi-plus-circle"></i>
+      {{ mostrarFormularioDeposito ? 'Cancelar' : 'Novo Depósito' }}
+    </button>
+  </div>
+
+  <!-- Formulário de Depósito -->
+  @if (mostrarFormularioDeposito) {
+    <div class="container-formulario-deposito">
+      <h4>Realizar Depósito</h4>
+      
+      @if (mensagemSucesso) {
+        <div class="alert alert-success">
+          <i class="bi bi-check-circle"></i> {{ mensagemSucesso }}
+        </div>
+      }
+
+      @if (mensagemErro) {
+        <div class="alert alert-danger">
+          <i class="bi bi-exclamation-triangle"></i> {{ mensagemErro }}
+        </div>
+      }
+
+      <form [formGroup]="formularioDeposito" (ngSubmit)="realizarDeposito()">
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label for="valor" class="form-label">Valor *</label>
+            <input 
+              type="text" 
+              class="form-control"
+              [class.is-invalid]="formularioDeposito.get('valor')?.invalid && formularioDeposito.get('valor')?.touched"
+              id="valor"
+              formControlName="valor"
+              placeholder="R$ 0,00"
+              currencyMask
+              [options]="opcoesMoeda">
+            @if (formularioDeposito.get('valor')?.invalid && formularioDeposito.get('valor')?.touched) {
+              <div class="invalid-feedback d-block">
+                @if (formularioDeposito.get('valor')?.errors?.['required']) {
+                  Valor é obrigatório
+                } @else if (formularioDeposito.get('valor')?.errors?.['min']) {
+                  Valor deve ser maior que zero
+                }
+              </div>
+            }
+          </div>
+
+          <div class="col-md-6 mb-3">
+            <label for="descricao" class="form-label">Descrição *</label>
+            <input 
+              type="text" 
+              class="form-control"
+              [class.is-invalid]="formularioDeposito.get('descricao')?.invalid && formularioDeposito.get('descricao')?.touched"
+              id="descricao"
+              formControlName="descricao"
+              placeholder="Ex: Salário, Freelance, etc.">
+            @if (formularioDeposito.get('descricao')?.invalid && formularioDeposito.get('descricao')?.touched) {
+              <div class="invalid-feedback d-block">
+                @if (formularioDeposito.get('descricao')?.errors?.['required']) {
+                  Descrição é obrigatória
+                } @else if (formularioDeposito.get('descricao')?.errors?.['minlength']) {
+                  Descrição deve ter no mínimo 3 caracteres
+                }
+              </div>
+            }
+          </div>
+        </div>
+
+        <div class="acoes-formulario">
+          <button 
+            type="button" 
+            class="btn btn-outline-secondary"
+            (click)="alternarFormularioDeposito()"
+            [disabled]="processando">
+            Cancelar
+          </button>
+          <button 
+            type="submit" 
+            class="btn btn-success"
+            [disabled]="formularioDeposito.invalid || processando">
+            @if (processando) {
+              <span class="spinner-border spinner-border-sm me-2"></span>
+              Processando...
+            } @else {
+              <i class="bi bi-check-circle me-2"></i>
+              Depositar
+            }
+          </button>
+        </div>
+      </form>
+    </div>
+  }
+ 
+  <div class="filtros">
+    <button 
+      class="btn btn-sm"
+      [class.btn-primary]="tipoFiltro === 'todas'"
+      [class.btn-outline-primary]="tipoFiltro !== 'todas'"
+      (click)="definirFiltro('todas')">
+      Todas
+    </button>
+    <button 
+      class="btn btn-sm"
+      [class.btn-success]="tipoFiltro === 'receita'"
+      [class.btn-outline-success]="tipoFiltro !== 'receita'"
+      (click)="definirFiltro('receita')">
+      <i class="bi bi-arrow-down-circle"></i> Receitas
+    </button>
+    <button 
+      class="btn btn-sm"
+      [class.btn-danger]="tipoFiltro === 'despesa'"
+      [class.btn-outline-danger]="tipoFiltro !== 'despesa'"
+      (click)="definirFiltro('despesa')">
+      <i class="bi bi-arrow-up-circle"></i> Despesas
+    </button>
+  </div>
+
+  <!-- Transactions List -->
+  <div class="container-transacoes">
+    @if (transacoesFiltradas.length === 0) {
+      <div class="alert alert-info">
+        Nenhuma transação encontrada.
+      </div>
+    } @else {
+      <div class="table-responsive">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Data</th>
+              <th>Descrição</th>
+              <th>Tipo</th>
+              <th class="text-end">Valor</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (transacao of transacoesFiltradas; track transacao.id) {
+              <tr>
+                <td class="data-transacao">
+                  {{ transacao.data | date: 'dd/MM/yyyy' }}<br>
+                  <small class="text-muted">{{ transacao.data | date: 'HH:mm' }}</small>
+                </td>
+                <td class="descricao-transacao">
+                  {{ transacao.descricao }}
+                </td>
+                <td>
+                  <span 
+                    class="badge"
+                    [class.bg-success]="transacao.tipo === 'receita'"
+                    [class.bg-danger]="transacao.tipo === 'despesa'">
+                    <i class="bi" 
+                       [class.bi-arrow-down-circle]="transacao.tipo === 'receita'"
+                       [class.bi-arrow-up-circle]="transacao.tipo === 'despesa'">
+                    </i>
+                    {{ transacao.tipo === 'receita' ? 'Receita' : 'Despesa' }}
+                  </span>
+                </td>
+                <td class="text-end">
+                  <span 
+                    class="valor-transacao"
+                    [class.receita]="transacao.tipo === 'receita'"
+                    [class.despesa]="transacao.tipo === 'despesa'">
+                    {{ transacao.valor | currency: 'BRL' }}
+                  </span>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+      
+      <div class="resumo-transacoes">
+        <strong>Total de transações: {{ transacoesFiltradas.length }}</strong>
+      </div>
+    }
+  </div>
+</div>

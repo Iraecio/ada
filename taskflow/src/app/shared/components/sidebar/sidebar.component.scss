@@ -1,0 +1,134 @@
+.menu-lateral {
+  width: 250px;
+  background-color: white;
+  border-right: 1px solid #dee2e6;
+  padding: 0;
+  overflow-y: auto;
+  transition: all 0.3s ease;
+  position: relative;
+  z-index: 999;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+ 
+  &:not(.expandido) {
+    @media (min-width: 769px) {
+      width: 70px;
+
+      .menu-header {
+        justify-content: center;
+      }
+
+      .logo-menu {
+        display: none;
+      }
+
+      .rotulo-menu {
+        display: none;
+      }
+
+      .item-menu {
+        justify-content: center;
+        padding: 1rem 0.5rem;
+      }
+    }
+  }
+ 
+  @media (max-width: 768px) {
+    position: fixed;
+    top: 0;
+    left: -100%;
+    height: 100vh;
+    width: 280px;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+
+    &.aberto {
+      left: 0;
+    }
+  }
+}
+
+.menu-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem;
+  border-bottom: 1px solid #dee2e6;
+
+  @media (max-width: 768px) {
+    display: none;
+  }
+}
+
+.logo-menu {
+  font-size: 1.5rem;
+  color: #667eea;
+  display: flex;
+  align-items: center;
+  transition: all 0.3s ease;
+}
+
+.botao-toggle-desktop {
+  background: none;
+  border: none;
+  color: #6c757d;
+  font-size: 1.25rem;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 0.25rem;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:hover {
+    background-color: #f8f9fa;
+    color: #495057;
+  }
+}
+
+.menu {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1rem 0;
+  flex: 1;
+}
+
+.item-menu {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 1.5rem;
+  border: none;
+  background: none;
+  color: #6c757d;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: left;
+  border-left: 3px solid transparent;
+  white-space: nowrap;
+
+  i {
+    font-size: 1.25rem;
+    min-width: 1.25rem;
+    flex-shrink: 0;
+  }
+
+  .rotulo-menu {
+    transition: opacity 0.2s ease;
+  }
+
+  &:hover {
+    background-color: #f8f9fa;
+    color: #495057;
+  }
+
+  &.ativo {
+    color: #667eea;
+    background-color: #f0f2ff;
+    border-left-color: #667eea;
+    font-weight: 500;
+  }
+}
